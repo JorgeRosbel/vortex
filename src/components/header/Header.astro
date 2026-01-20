@@ -59,7 +59,7 @@ const { categories, title, links } = Astro.props as Props;
                     {
                         categories.map((category) => (
                             <a href={category.href+ "/1"}>
-                                <p class="playfair-font font-bold capitalize">{category.title}</p>
+                                <p class=" font-bold capitalize">{category.title}</p>
                                 {
                                     category.description && (
                                         <p class="text-[0.75rem] opacity-70">{category.description}</p>
