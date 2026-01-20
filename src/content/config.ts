@@ -4,10 +4,8 @@ import { z, defineCollection } from 'astro:content';
 const blog = defineCollection({
     schema: z.object({
         lang: z.enum(['en', 'es','pt']).default('en'),
-        category: z.object({
-            name: z.string(),
-            description: z.string().optional(),
-        }).optional(),
+        category: z.string(),
+        categoryDescription: z.string().optional(),
         title: z.string(),
         description: z.string().optional(),
         read: z.number().optional(),
@@ -16,6 +14,7 @@ const blog = defineCollection({
         pubDate: z.coerce.date(),
         heroImage: z.string().optional(),
         updatedDate: z.coerce.date().optional(),
+        relationID: z.string(),
     }),
 });
 

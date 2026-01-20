@@ -1,34 +1,40 @@
 ---
 import { PageMetadata } from "@/src/components/hybrid-astro-ui/page-metadata";
-import { ThemeProvider } from '@/src/components/hybrid-astro-ui/theme-toggle';
-
+import { ThemeProvider } from "@/src/components/hybrid-astro-ui/theme-toggle";
 
 interface Props {
 	title: string;
 	description: string;
 	image: ImageMetadata;
 	lang: string;
+	alternateLinks?: { href: string; hreflang: string }[];
 }
 
-const { title, description, image, lang } = Astro.props as Props;
-
+const { title, description, image, lang, alternateLinks } = Astro.props as Props;
 ---
-
 
 <!doctype html>
 <html lang={lang}>
 	<head>
 		<ThemeProvider />
 		<PageMetadata
+			lang={lang}
 			title={title}
 			description={description}
 			image={image}
 			enableClientRouter
 			ogType="website"
 			favicons={[]}
+			alternateLinks={alternateLinks}
 			preloadFonts={[
-				{ href: '/fonts/Inter/Inter-VariableFont_opsz_wght.ttf', type: 'font/ttf' },
-				{ href: '/fonts/Playfair_Display/PlayfairDisplay-VariableFont_wght.ttf', type: 'font/ttf' }
+				{
+					href: "/fonts/Inter/Inter-VariableFont_opsz_wght.ttf",
+					type: "font/ttf",
+				},
+				{
+					href: "/fonts/Playfair_Display/PlayfairDisplay-VariableFont_wght.ttf",
+					type: "font/ttf",
+				},
 			]}
 		/>
 	</head>
@@ -36,5 +42,3 @@ const { title, description, image, lang } = Astro.props as Props;
 		<slot />
 	</body>
 </html>
-
-

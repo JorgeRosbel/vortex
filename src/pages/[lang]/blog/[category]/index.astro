@@ -1,0 +1,49 @@
+---
+
+import type {
+  GetStaticPaths,
+  InferGetStaticParamsType,
+} from "astro";
+
+import { getCollection } from "astro:content";
+import { slugify } from "@/src/lib/utils";
+
+
+export const getStaticPaths = (async () => {
+  const allPosts = await getCollection("blog");
+
+  const paths = allPosts.map((post) => ({
+    params: {
+      lang: post.data.lang,
+      category: slugify(post.data.category),
+    },
+    props: {
+      lang: post.data.lang,
+      categoryName: post.data.category,
+      categoryDescription: post.data.categoryDescription,
+    },
+  }));
+
+  // Forzamos el tipo al final para que satisfaga GetStaticPaths
+  const uniquePaths = Array.from(
+    new Map(
+      paths.map((p) => [`${p.params.lang}-${p.params.category}`, p]),
+    ).values(),
+  ) as { params: { lang: string; category: string }; props: any }[];
+
+  return uniquePaths;
+}) satisfies GetStaticPaths;
+
+type Params = InferGetStaticParamsType<typeof getStaticPaths>;
+//type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { lang, category } = Astro.params as Params;
+
+
+return Astro.redirect(
+  `/${lang}/blog/${category}/1`
+);
+
+---
+
+

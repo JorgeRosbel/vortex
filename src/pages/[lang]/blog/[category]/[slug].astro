@@ -1,0 +1,135 @@
+---
+
+import { slugify } from "@/src/lib/utils";
+import CategoryLayout from "@/src/layouts/CategoryLayout.astro";
+import { useI18n } from "@ariaskit/astro-i18n";
+import SchemaLang from "@/src/i18n/en.json";
+
+import { Button } from "@/src/components/hybrid-astro-ui/button"
+
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbSeparator,
+  BreadcrumbLocation,
+} from "@/src/components/hybrid-astro-ui/breadcrumb";
+
+import { FormattedDate } from "@/src/components/hybrid-astro-ui/formatted-date";
+import { getCollectionEntries } from "@ariaskit/astro-collections";
+import type { collections } from "@/src/content/config";
+
+export async function getStaticPaths() {
+   const allPosts = await getCollectionEntries<typeof collections>("blog", {
+    sortByFn: (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
+  });
+  
+  return allPosts.map((post) => {
+    const realSlug = post.slug.split("/").pop();
+
+    return {
+      params: {
+        lang: post.data.lang,
+        category: slugify(post.data.category),
+        slug: realSlug,
+      },
+      props: { post, categoryName: post.data.category},
+    };
+  });
+}
+
+const { t } = useI18n<typeof SchemaLang>(Astro);
+
+// Acceso a los datos
+const { category} = Astro.params;
+const { post , categoryName } = Astro.props;
+const { Content } = await post.render();
+
+const allPosts = await getCollectionEntries<typeof collections>("blog", {
+  filterFn: (entry) => entry.data.relationID === post.data.relationID,
+});
+
+const alternateLinks: { href: string; hreflang: string }[] = [];
+
+allPosts.forEach((p) => {
+  alternateLinks.push({
+    href: `/${p.data.lang}/blog/${slugify(p.data.category)}/${p.slug.split("/").pop()}`,
+    hreflang: p.data.lang,
+  });
+});
+
+
+
+
+---
+
+<CategoryLayout
+  title={post.data.title}
+  description={post.data.description || ""}
+  alternateLinks={alternateLinks}
+>
+  <article class="mt-20 w-full max-w-3xl mx-auto fade-up">
+    <Button 
+      as="a" 
+      variant="ghost" 
+      class="opacity-70 text-md"
+      href={`/${Astro.params.lang}/blog/${slugify(category)}`} >
+      ← {t("blog.backToBlog", { category: categoryName })}
+
+    </Button>
+    <div class="custom-prose pb-2 border-b ">
+      <h1>{post.data.title}</h1>
+      <p class="opacity-60 text-xl!">{post.data.description}</p>
+    </div>
+
+    <div class="py-6 border-b mb-6">
+        {post.data.author &&
+          <div class="flex items-center gap-3">
+            <div class="h-10 w-10 rounded-full bg-muted"></div>
+            <div class="flex flex-col">
+              <span class="font-medium">{post.data.author}</span>
+              {post.data.pubDate && 
+                <FormattedDate 
+                  class="opacity-60 text-sm"
+                  date={new Date(post.data.pubDate)} 
+                  locale={Astro.params.lang} />}
+            </div>
+          </div>
+        }
+    </div>
+
+    <Breadcrumb>
+      <BreadcrumbItem>
+        <BreadcrumbLink href={t("home.header.menu.home.href")}
+          >{t("home.header.menu.home.text")}</BreadcrumbLink
+        >
+      </BreadcrumbItem>
+      <BreadcrumbSeparator />
+      <BreadcrumbItem>
+        <BreadcrumbLink href={`/${Astro.params.lang}/blog/${slugify(category)}`}
+          >{category}</BreadcrumbLink
+        >
+      </BreadcrumbItem>
+      <BreadcrumbSeparator />
+      <BreadcrumbItem>
+        <BreadcrumbLocation>{Astro.params.slug}</BreadcrumbLocation>
+      </BreadcrumbItem>
+    </Breadcrumb>
+    <div class="mt-8 h-100 w-full bg-muted">
+      {post.data.heroImage && (
+        <img
+          loading="lazy"
+          width="400"
+          height="400"
+          src={post.data.heroImage}
+          alt={post.data.title}
+          class="w-full h-full object-cover rounded-md my-8"
+        />
+      )}
+      
+    </div>
+    <div class="custom-prose">
+      <Content />
+    </div>
+  </article>
+</CategoryLayout>

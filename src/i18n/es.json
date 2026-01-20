@@ -10,7 +10,7 @@
             "menu": {
                 "home": {
                     "text": "Inicio",
-                    "href": "/"
+                    "href": "/es"
                 },
                 "about": {
                     "text": "Acerca de",
@@ -22,5 +22,10 @@
                 }
             }
         }
+    },
+    "category": "categoria",
+    "blog": {
+        "readMore": "Leer Más",
+        "backToBlog": "Volver a los artículos de {{category}}"
     }
 }

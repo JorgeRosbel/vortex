@@ -1,32 +1,72 @@
 ---
 import BaseLayout from "@/src/layouts/BaseLayout.astro";
-import { useI18n } from "@ariaskit/astro-i18n"
-import SchemaLang from "@/src/i18n/en.json"
-import PlaceHolderImage from "@/src/assets/background.svg"
+import { useI18n } from "@ariaskit/astro-i18n";
+import SchemaLang from "@/src/i18n/en.json";
+import PlaceHolderImage from "@/src/assets/background.svg";
 import type { GetStaticPaths } from "astro";
 import Header from "@/src/components/header/Header.astro";
 import { getCollection } from "astro:content";
+import { slugify } from "@/src/lib/utils";
 
 export const getStaticPaths = (() => {
-  return [
-    { params: { lang: "en" } },
-    { params: { lang: "es" } }
-  ];
+  return [{ params: { lang: "en" } }, { params: { lang: "es" } },  { params: { lang: "pt" } }];
 }) satisfies GetStaticPaths;
 
 interface Props {
-    lang: string;
+  lang: string;
 }
 
 const { t, lang } = useI18n<typeof SchemaLang>(Astro);
+
+const allPosts = await getCollection("blog", (entry) => entry.data.lang === lang);
+
+const categories = [
+  ...new Map(
+    allPosts.map((entry) => [
+      entry.data.category, 
+      {
+        title: entry.data.category,
+        description: entry.data.categoryDescription,
+        href: `/${lang}/blog/${slugify(entry.data.category)}`,
+      }
+    ])
+  ).values(),
+];
+
+const links = [
+  {
+    title: t("home.header.menu.home.text"),
+    href: `/${lang}${t("home.header.menu.home.href")}`,
+  },
+  {
+    title: t("home.header.menu.about.text"),
+    href: `/${lang}${t("home.header.menu.about.href")}`,
+  },
+  {
+    title: t("home.header.menu.latest.text"),
+    href: `/${lang}${t("home.header.menu.latest.href")}`,
+  },
+];
+
+const alternateLinks = [
+  { href: `/en`, hreflang: 'en' },
+  { href: `/es`, hreflang: 'es' },
+  { href: `/pt`, hreflang: 'pt' },
+];
+
 ---
 
 <BaseLayout
-	title={t("home.metadata.title")}
-	description={t("home.metadata.description")}
-	image={PlaceHolderImage}
-	lang={lang}
-  >
-  <Header />
+  title={t("home.metadata.title")}
+  description={t("home.metadata.description")}
+  image={PlaceHolderImage}
+  lang={lang}
+  alternateLinks={alternateLinks}
+>
+  <Header
+    title="Vortex"
+    categories={categories}
+    links={links}
 
+  />
 </BaseLayout>

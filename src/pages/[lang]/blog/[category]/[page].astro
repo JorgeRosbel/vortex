@@ -1,0 +1,179 @@
+---
+import BaseLayout from "@/src/layouts/BaseLayout.astro";
+import { useI18n } from "@ariaskit/astro-i18n";
+import SchemaLang from "@/src/i18n/en.json";
+import PlaceHolderImage from "@/src/assets/background.svg";
+import type { GetStaticPaths, InferGetStaticParamsType, Page } from "astro";
+import Header from "@/src/components/header/Header.astro";
+import { getCollection } from "astro:content";
+import { slugify } from "@/src/lib/utils";
+import type { CollectionEntry } from "astro:content";
+import { getCollectionEntries } from "@ariaskit/astro-collections";
+import type { collections } from "@/src/content/config";
+
+type BlogEntry = CollectionEntry<"blog">;
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const allPosts = await getCollection("blog");
+  const POSTS_PER_PAGE = 2;
+
+  // Agrupar posts por idioma y categoría
+  const groupedPosts = allPosts.reduce(
+    (acc, post) => {
+      const key = `${post.data.lang}-${slugify(post.data.category)}`;
+      if (!acc[key]) {
+        acc[key] = {
+          posts: [],
+          lang: post.data.lang,
+          category: slugify(post.data.category),
+          categoryName: post.data.category,
+          categoryDescription: post.data.categoryDescription,
+        };
+      }
+      acc[key].posts.push(post);
+      return acc;
+    },
+    {} as Record<string, any>,
+  );
+
+  // Crear rutas paginadas para cada grupo
+  const paths = Object.values(groupedPosts).flatMap((group: any) => {
+    return paginate(group.posts, {
+      params: {
+        lang: group.lang,
+        category: group.category,
+      },
+      props: {
+        categoryName: group.categoryName,
+        categoryDescription: group.categoryDescription,
+      },
+      pageSize: POSTS_PER_PAGE,
+    });
+  });
+
+  return paths;
+}) satisfies GetStaticPaths;
+
+type Params = InferGetStaticParamsType<typeof getStaticPaths>;
+
+const { lang } = Astro.params as Params;
+
+const { t } = useI18n<typeof SchemaLang>(Astro);
+
+const allPostsInLang = await getCollection(
+  "blog",
+  (entry) => entry.data.lang === lang,
+);
+
+const categories = [
+  ...new Map(
+    allPostsInLang.map((entry) => [
+      entry.data.category,
+      {
+        title: entry.data.category,
+        description: entry.data.categoryDescription,
+        href: `/${lang}/blog/${slugify(entry.data.category)}`,
+      },
+    ]),
+  ).values(),
+];
+
+const links = [
+  {
+    title: t("home.header.menu.home.text"),
+    href: t("home.header.menu.home.href"),
+  },
+  {
+    title: t("home.header.menu.about.text"),
+    href: `/${lang}${t("home.header.menu.about.href")}`,
+  },
+  {
+    title: t("home.header.menu.latest.text"),
+    href: `/${lang}${t("home.header.menu.latest.href")}`,
+  },
+];
+
+interface Props {
+  categoryName: string;
+  categoryDescription: string;
+  page: Page<BlogEntry>;
+}
+
+
+const { page, categoryName, categoryDescription } = Astro.props as Props;
+
+
+---
+
+<BaseLayout
+  title={categoryName}
+  description={categoryDescription}
+  image={PlaceHolderImage}
+  lang={lang}
+>
+  <Header title="Vortex" categories={categories} links={links} />
+
+  <main class="w-full px-4 mt-30 flex justify-center">
+    <div class="w-full max-w-5xl">
+      <h1 class="text-4xl font-bold mb-4 capitalize text-center playfair-font">{categoryName}</h1>
+      {categoryDescription && <p class="text-center opacity-60 mb-8">{categoryDescription}</p>}
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {
+          page.data.map((post) => (
+            <a
+              href={`/${lang}/blog/${slugify(post.data.category)}/${post.slug.split("/").pop()}`}
+            >
+              <article>
+                {post.data.heroImage && (
+                  <img
+                    width="200"
+                    height="200"
+                    src={post.data.heroImage}
+                    alt={post.data.title}
+                    class="w-full h-48 object-cover rounded-lg mb-4"
+                  />
+                )}
+                <div>
+                  <div>
+                    <span class="uppercase font-normal opacity-60 text-sm">{post.data.category}</span>
+                  </div>
+                  <h2 class="text-xl font-medium mb-2 playfair-font line-clamp-2 text-[1.4rem]">
+                    {post.data.title}
+                  </h2>
+                  <p class="line-clamp-2 opacity-60 text-md">{post.data.description}</p>
+                </div>
+              </article>
+            </a>
+          ))
+        }
+      </div>
+
+      <!-- Controles de paginación -->
+      {
+        page.lastPage > 1 && (
+          <nav class="flex items-center justify-center gap-4 mt-12">
+            {page.url.prev && (
+              <a
+                href={page.url.prev}
+                class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors"
+              >
+                ← Anterior
+              </a>
+            )}
+            <span class="text-sm text-gray-600">
+              Página {page.currentPage} de {page.lastPage}
+            </span>
+            {page.url.next && (
+              <a
+                href={page.url.next}
+                class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors"
+              >
+                Siguiente →
+              </a>
+            )}
+          </nav>
+        )
+      }
+    </div>
+  </main>
+</BaseLayout>

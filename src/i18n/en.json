@@ -1,26 +1,31 @@
 {
     "home": {
         "metadata": {
-            "title": "Vortex - Página de Inicio",
-            "description": "Bienvenido a la página de inicio de nuestro sitio web."
+            "title": "Vortex - Home Page",
+            "description": "Welcome to our website's homepage."
         },
         "header": {
             "title": "Vortex",
-            "buttonText": "Comenzar",
+            "buttonText": "Get Started",
             "menu": {
                 "home": {
-                    "text": "Inicio",
-                    "href": "/"
+                    "text": "Home",
+                    "href": "/en"
                 },
                 "about": {
-                    "text": "Acerca de",
-                    "href": "/sobre-nosotros"
+                    "text": "About",
+                    "href": "/about"
                 },
                 "latest": {
-                    "text": "Últimas Noticias",
-                    "href": "/ultimos-articulos"
+                    "text": "Latest News",
+                    "href": "/latest-articles"
                 }
             }
         }
+    },
+    "category": "category",
+    "blog": {
+        "readMore": "Read More",
+        "backToBlog": "Back to {{category}} articles"
     }
 }

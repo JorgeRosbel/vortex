@@ -17,43 +17,38 @@ import {
 } from "@/src/components/hybrid-astro-ui/tooltip";
 
 
+interface Category {
+    title: string;
+    description?: string;
+    href: string;
+}
 
-const categories = [
-    {
-        title: "Architecture & Infrastructure",
-        description:
-            "Explorando las bases técnicas que permiten construir sistemas escalables y resilientes en la nube.",
-        href: "/category/architecture",
-    },
-    {
-        title: "Developer Experience",
-        description:
-            "Optimización de flujos de trabajo, herramientas internas y cómo mejorar la productividad del equipo.",
-        href: "/category/dx",
-    },
-    {
-        title: "Product Engineering",
-        description:
-            "El balance entre la excelencia técnica y la entrega de valor real a través de interfaces intuitivas.",
-        href: "/category/product-engineering",
-    },
-    {
-        title: "Security & Compliance",
-        description:
-            "Prácticas avanzadas para proteger datos y mantener la integridad de los sistemas en producción.",
-        href: "/category/security",
-    },
-];
+interface Links {
+    title: string;
+    href: string;
+};
+
+interface Props {
+    title: string;
+    categories: Category[];
+    links: Links[];
+
+}
+
+const { categories, title, links } = Astro.props as Props;
+
+
+
 
 
 ---
 
 <header
-    class="border-b bg-background/10 backdrop-blur-3xl py-4 flex items-center justify-center w-full"
+    class="border-b bg-background/10 backdrop-blur-3xl py-4 flex items-center justify-center w-full fixed top-0 z-50"
 >
     <div class="flex items-center justify-between w-full max-w-7xl px-6">
-        <a href="/" class="font-semibold playfair-font text-3xl">Vortex </a>
-        <NavigationMenu class="flex-1">
+        <a href="/" class="font-semibold playfair-font text-3xl">{title}</a>
+        <NavigationMenu class="flex-1 bg-transparent">
             <NavigationMenuItem>
                 <NavigationMenuTrigger
                     class="font-normal text-[0.9rem] opacity-75 hover:opacity-100"
@@ -63,11 +58,13 @@ const categories = [
                 <NavigationMenuContent class="md:grid-cols-2">
                     {
                         categories.map((category) => (
-                            <a href={category.href}>
-                                <p class="playfair-font font-bold">{category.title}</p>
-                                <p class="opacity-55 text-[0.75rem]">
-                                    {category.description}
-                                </p>
+                            <a href={category.href+ "/1"}>
+                                <p class="playfair-font font-bold capitalize">{category.title}</p>
+                                {
+                                    category.description && (
+                                        <p class="text-[0.75rem] opacity-70">{category.description}</p>
+                                    )
+                                }
                             </a>
                         ))
                     }
@@ -75,32 +72,18 @@ const categories = [
             </NavigationMenuItem>
 
             
-            <NavigationMenuItem>
-                <NavigationMenuTrigger
-                    class="font-normal text-[0.9rem] opacity-75 hover:opacity-100"
-                    disableTrigger
-                >
-                    <a href="/pricing">Featured</a>
-                </NavigationMenuTrigger>
-            </NavigationMenuItem>
-
-            <NavigationMenuItem>
-                <NavigationMenuTrigger
-                    class="font-normal text-[0.9rem] opacity-75 hover:opacity-100"
-                    disableTrigger
-                >
-                    <a href="/pricing">Latest Post</a>
-                </NavigationMenuTrigger>
-            </NavigationMenuItem>
-
-            <NavigationMenuItem>
-                <NavigationMenuTrigger
-                    class="font-normal text-[0.9rem] opacity-75 hover:opacity-100"
-                    disableTrigger
-                >
-                    <a href="/pricing">About US</a>
-                </NavigationMenuTrigger>
-            </NavigationMenuItem>
+           {
+                links.map((link) => (
+                    <NavigationMenuItem>
+                        <NavigationMenuTrigger
+                            class="font-normal text-[0.9rem] opacity-75 hover:opacity-100"
+                            disableTrigger
+                        >
+                            <a href={link.href}>{link.title}</a>
+                        </NavigationMenuTrigger>
+                    </NavigationMenuItem>
+                ))
+           }
 
         </NavigationMenu>
 
