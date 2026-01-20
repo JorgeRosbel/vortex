@@ -1,0 +1,25 @@
+---
+
+interface Props {
+    p1: string;
+    h1: string;
+    h2: string;
+}
+
+const { p1, h1, h2 } = Astro.props as Props;
+
+const parts = h1.split(" ");
+const lastPart = parts.pop() as string;
+---
+
+<section class="w-full min-h-screen flex items-center justify-center px-4">
+    <div class="w-full max-w-5xl min-h-screen flex flex-col items-center justify-center gap-4">
+        <p class="text-sm uppercase opacity-60">{p1}</p>
+        <h1 class="text-5xl md:text-8xl playfair-font font-medium text-center leading-tight ">
+            <span>{h1.replace(lastPart, "")}</span>
+            <br/>
+            <span class="italic">{lastPart}</span>
+        </h1>
+        <h2 class="text-lg md:text-xl text-center opacity-80 max-w-3xl">{h2}</h2>
+    </div>
+</section>

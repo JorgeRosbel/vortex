@@ -21,6 +21,11 @@
                     "href": "/ultimos-artigos"
                 }
             }
+        },
+        "hero": {
+            "p1": "Histórias que importam",
+            "h1": "Ideias que moldam o amanhã",
+            "h2": "Perspectivas selecionadas sobre design, tecnologia, cultura e a arte de viver internacionalmente."
         }
     },
     "category": "categoria",

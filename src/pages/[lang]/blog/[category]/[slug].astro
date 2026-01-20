@@ -38,9 +38,8 @@ export async function getStaticPaths() {
   });
 }
 
-const { t, changeLocale } = useI18n<typeof SchemaLang>(Astro);
+const { t } = useI18n<typeof SchemaLang>(Astro);
 
-// Acceso a los datos
 const { category} = Astro.params;
 const { post , categoryName } = Astro.props;
 const { Content } = await post.render();

@@ -7,6 +7,7 @@ import type { GetStaticPaths } from "astro";
 import Header from "@/src/components/header/Header.astro";
 import { getCollection } from "astro:content";
 import { slugify } from "@/src/lib/utils";
+import Hero from "@/src/components/hero/Hero.astro";
 
 export const getStaticPaths = (() => {
   return [{ params: { lang: "en" } }, { params: { lang: "es" } },  { params: { lang: "pt" } }];
@@ -67,6 +68,11 @@ const alternateLinks = [
     title="Vortex"
     categories={categories}
     links={links}
+  />
 
+  <Hero 
+    p1={t("home.hero.p1")}
+    h1={t("home.hero.h1")}
+    h2={t("home.hero.h2")}
   />
 </BaseLayout>
