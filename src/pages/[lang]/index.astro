@@ -8,9 +8,14 @@ import Header from "@/src/components/header/Header.astro";
 import { getCollection } from "astro:content";
 import { slugify } from "@/src/lib/utils";
 import Hero from "@/src/components/hero/Hero.astro";
+import LatestPosts from "@/src/components/post-card/LatestPosts.astro";
 
 export const getStaticPaths = (() => {
-  return [{ params: { lang: "en" } }, { params: { lang: "es" } },  { params: { lang: "pt" } }];
+  return [
+    { params: { lang: "en" } },
+    { params: { lang: "es" } },
+    { params: { lang: "pt" } },
+  ];
 }) satisfies GetStaticPaths;
 
 interface Props {
@@ -19,25 +24,28 @@ interface Props {
 
 const { t, lang } = useI18n<typeof SchemaLang>(Astro);
 
-const allPosts = await getCollection("blog", (entry) => entry.data.lang === lang);
+const allPosts = await getCollection(
+  "blog",
+  (entry) => entry.data.lang === lang,
+);
 
 const categories = [
   ...new Map(
     allPosts.map((entry) => [
-      entry.data.category, 
+      entry.data.category,
       {
         title: entry.data.category,
         description: entry.data.categoryDescription,
         href: `/${lang}/blog/${slugify(entry.data.category)}`,
-      }
-    ])
+      },
+    ]),
   ).values(),
 ];
 
 const links = [
   {
     title: t("home.header.menu.home.text"),
-    href: `/${lang}${t("home.header.menu.home.href")}`,
+    href: t("home.header.menu.home.href"),
   },
   {
     title: t("home.header.menu.about.text"),
@@ -50,11 +58,10 @@ const links = [
 ];
 
 const alternateLinks = [
-  { href: `/en`, hreflang: 'en' },
-  { href: `/es`, hreflang: 'es' },
-  { href: `/pt`, hreflang: 'pt' },
+  { href: `/en`, hreflang: "en" },
+  { href: `/es`, hreflang: "es" },
+  { href: `/pt`, hreflang: "pt" },
 ];
-
 ---
 
 <BaseLayout
@@ -64,15 +71,19 @@ const alternateLinks = [
   lang={lang}
   alternateLinks={alternateLinks}
 >
-  <Header
-    title="Vortex"
-    categories={categories}
-    links={links}
-  />
+  <Header title="Vortex" categories={categories} links={links} />
 
-  <Hero 
-    p1={t("home.hero.p1")}
-    h1={t("home.hero.h1")}
-    h2={t("home.hero.h2")}
-  />
+  <main class="flex flex-col">
+    <Hero
+      p1={t("home.hero.p1")}
+      h1={t("home.hero.h1")}
+      h2={t("home.hero.h2")}
+    />
+
+    <LatestPosts
+      title={t("home.latestPosts.title")}
+      description={t("home.latestPosts.description")}
+      latestPosts={{ posts: allPosts, amount: 6 }}
+    />
+  </main>
 </BaseLayout>

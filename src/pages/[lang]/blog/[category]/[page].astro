@@ -8,8 +8,7 @@ import Header from "@/src/components/header/Header.astro";
 import { getCollection } from "astro:content";
 import { slugify } from "@/src/lib/utils";
 import type { CollectionEntry } from "astro:content";
-import { getCollectionEntries } from "@ariaskit/astro-collections";
-import type { collections } from "@/src/content/config";
+import PostCard from "@/src/components/post-card/PostCard.astro";
 
 type BlogEntry = CollectionEntry<"blog">;
 
@@ -120,30 +119,7 @@ const { page, categoryName, categoryDescription } = Astro.props as Props;
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {
           page.data.map((post) => (
-            <a
-              href={`/${lang}/blog/${slugify(post.data.category)}/${post.slug.split("/").pop()}`}
-            >
-              <article>
-                {post.data.heroImage && (
-                  <img
-                    width="200"
-                    height="200"
-                    src={post.data.heroImage}
-                    alt={post.data.title}
-                    class="w-full h-48 object-cover rounded-lg mb-4"
-                  />
-                )}
-                <div>
-                  <div>
-                    <span class="uppercase font-normal opacity-60 text-sm">{post.data.category}</span>
-                  </div>
-                  <h2 class="text-xl font-medium mb-2 playfair-font line-clamp-2 text-[1.4rem]">
-                    {post.data.title}
-                  </h2>
-                  <p class="line-clamp-2 opacity-60 text-md">{post.data.description}</p>
-                </div>
-              </article>
-            </a>
+            <PostCard post={post} />
           ))
         }
       </div>

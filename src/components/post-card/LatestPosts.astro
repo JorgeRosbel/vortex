@@ -1,0 +1,36 @@
+---
+import PostCard from './PostCard.astro';
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+    title: string;
+    description: string;
+    latestPosts: {
+        posts:CollectionEntry<"blog">[],
+        amount: number
+    };
+
+}
+
+const { title, description, latestPosts } = Astro.props as Props;
+---
+
+<section class="w-full  flex items-center justify-center px-4 flex-col">
+    <div class="w-full max-w-5xl  flex flex-col items-center justify-center gap-4">
+        <h1 class="text-4xl md:text-5xl playfair-font font-medium text-center leading-tight ">
+            {title}
+        </h1>
+        <h2 class="text-lg md:text-xl text-center opacity-80 max-w-3xl">{description}</h2>
+    </div>
+
+    <div class="w-full max-w-5xl">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-16">
+            {
+                latestPosts.posts.slice(0, latestPosts.amount).map((post) => (
+                    <PostCard post={post} />
+                ))
+            }
+        </div>
+    </div>
+
+</section>

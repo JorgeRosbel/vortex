@@ -26,6 +26,10 @@
             "p1": "Historias que importan",
             "h1": "Ideas que moldean el mañana",
             "h2": "Perspectivas cuidadas sobre diseño, tecnología, cultura y el arte de vivir internacionalmente."
+        },
+        "latestPosts": {
+            "title": "Últimos Artículos",
+            "description": "Explora nuestros artículos más recientes sobre una variedad de temas."
         }
     },
     "category": "categoria",

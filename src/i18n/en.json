@@ -26,6 +26,10 @@
             "p1": "Stories that matter",
             "h1": "Ideas that shape tomorrow",
             "h2": "Curated perspectives on design, technology, culture, and the art of living internationally."
+        },
+        "latestPosts": {
+            "title": "Latest Articles",
+            "description": "Explore our most recent articles on a variety of topics."
         }
     },
     "category": "category",

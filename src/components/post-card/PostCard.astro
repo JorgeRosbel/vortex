@@ -1,0 +1,65 @@
+---
+import { slugify } from "@/src/lib/utils";
+import type { CollectionEntry } from "astro:content";
+import { FormattedDate } from "@/src/components/hybrid-astro-ui/formatted-date";
+import { Badge } from "@/src/components/hybrid-astro-ui/badge";
+
+interface Props {
+    post: CollectionEntry<"blog">;
+}
+
+const { post } = Astro.props as Props;
+---
+
+<a
+    class="group"
+    href={`/${post.data.lang}/blog/${slugify(post.data.category)}/${post.slug.split("/").pop()}`}
+>
+    <article>
+        {
+            post.data.heroImage && (
+                <div class="bg-muted rounded-lg  overflow-hidden mb-4">
+                    <img
+                        width="200"
+                        height="200"
+                        src={post.data.heroImage}
+                        alt={post.data.title}
+                        class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-200"
+                    />
+                </div>
+            )
+        }
+        <div>
+            <div>
+                <span class="uppercase font-medium opacity-60 text-sm"
+                    >{post.data.category}</span
+                >
+            </div>
+            <h2
+                class="text-xl font-medium mb-2 playfair-font line-clamp-2 text-[1.4rem] mt-4"
+            >
+                {post.data.title}
+            </h2>
+            <p class="line-clamp-2 opacity-60 text-sm mb-4">
+                {post.data.description}
+            </p>
+
+            <FormattedDate
+                date={new Date(post.data.pubDate)}
+                class="text-xs opacity-50"
+                locale={post.data.lang}
+            />
+            {
+                post.data.tags && (
+                    <div class="flex gap-2 mt-4">
+                        {post.data.tags.slice(0, 2).map((tag) => (
+                            <Badge class="line-clamp-1" variant="secondary">
+                                {tag}
+                            </Badge>
+                        ))}
+                    </div>
+                )
+            }
+        </div>
+    </article>
+</a>
