@@ -1,0 +1,32 @@
+---
+import BaseLayout from "@/src/layouts/BaseLayout.astro";
+import { useI18n } from "@ariaskit/astro-i18n"
+import SchemaLang from "@/src/i18n/en.json"
+import PlaceHolderImage from "@/src/assets/background.svg"
+import type { GetStaticPaths } from "astro";
+import Header from "@/src/components/header/Header.astro";
+import { getCollection } from "astro:content";
+
+export const getStaticPaths = (() => {
+  return [
+    { params: { lang: "en" } },
+    { params: { lang: "es" } }
+  ];
+}) satisfies GetStaticPaths;
+
+interface Props {
+    lang: string;
+}
+
+const { t, lang } = useI18n<typeof SchemaLang>(Astro);
+---
+
+<BaseLayout
+	title={t("home.metadata.title")}
+	description={t("home.metadata.description")}
+	image={PlaceHolderImage}
+	lang={lang}
+  >
+  <Header />
+
+</BaseLayout>

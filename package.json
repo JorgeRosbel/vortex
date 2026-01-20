@@ -1,0 +1,24 @@
+{
+  "name": "vortex",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@ariaskit/astro-collections": "^0.0.1",
+    "@ariaskit/astro-i18n": "^0.0.2",
+    "@astrojs/mdx": "^4.3.13",
+    "@astrojs/sitemap": "^3.7.0",
+    "@lucide/astro": "^0.562.0",
+    "@tailwindcss/vite": "^4.1.18",
+    "astro": "^5.16.11",
+    "clsx": "^2.1.1",
+    "sharp": "^0.34.5",
+    "tailwind-merge": "^3.4.0",
+    "tailwindcss": "^4.1.18"
+  }
+}

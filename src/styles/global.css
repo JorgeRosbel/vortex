@@ -1,0 +1,125 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Light Mode - Refinado (menos "gris" sucio) */
+  --background: oklch(99% 0.005 240);
+  --foreground: oklch(15% 0.02 240);
+
+  --primary: oklch(25% 0.02 240);
+  --primary-foreground: oklch(98% 0 0);
+
+  --secondary: oklch(95% 0.01 240);
+  --secondary-foreground: oklch(30% 0.02 240);
+
+  --muted: oklch(92% 0.01 240);
+  --muted-foreground: oklch(45% 0.02 240);
+
+  --accent: oklch(90% 0.02 240);
+  --accent-foreground: oklch(15% 0.02 240);
+
+  --border: oklch(85% 0.01 240);
+  --input: oklch(90% 0.01 240);
+  --ring: oklch(25% 0.02 240);
+
+  --radius: 0.75rem;
+
+  --destructive: oklch(55% 0.22 25);
+  --destructive-foreground: oklch(98% 0 0);
+}
+
+.dark {
+  /* Un fondo carbón profundo, no negro absoluto */
+  --background: oklch(18.66% 0.012 285.82); 
+  /* Texto "Off-white" para suavizar el contraste */
+  --foreground: oklch(94% 0.01 285);
+
+  /* Primario: Blanco puro para que resalte sobre el gris */
+  --primary: oklch(98% 0 0);
+  --primary-foreground: oklch(18% 0.012 285);
+
+  /* Secundario: El gris medio que ves en la imagen (para botones o tarjetas) */
+  --secondary: oklch(26% 0.015 285);
+  --secondary-foreground: oklch(90% 0.01 285);
+
+  /* Muted: Para textos que no deben distraer */
+  --muted: oklch(23% 0.015 285);
+  --muted-foreground: oklch(75% 0.015 285);
+
+  /* Accent: Un poco más claro para hovers o estados activos */
+  --accent: oklch(30% 0.02 285);
+  --accent-foreground: oklch(98% 0 0);
+
+  /* Bordes sutiles (clave en este estilo) */
+  --border: oklch(28% 0.015 285);
+  --input: oklch(24% 0.015 285);
+  --ring: oklch(80% 0.02 285);
+
+  /* Semántica de error */
+  --destructive: oklch(60% 0.15 25);
+  --destructive-foreground: oklch(98% 0 0);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+
+/* Primera fuente: Títulos */
+@font-face {
+  font-family: 'TituloFont';
+  src: url('/fonts/Inter/Inter-VariableFont_opsz_wght.ttf') format('ttf');
+  font-weight: normal;
+}
+
+/* Segunda fuente: Cuerpo */
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Playfair_Display/PlayfairDisplay-VariableFont_wght.ttf') format('ttf');
+  font-weight: normal;
+}
+
+
+.playfair-font {
+  font-family: 'TituloFont', serif;
+}
+
+
+.inter-font {
+  font-family: 'Inter', sans-serif;
+}

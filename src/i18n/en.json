@@ -1,0 +1,26 @@
+{
+    "home": {
+        "metadata": {
+            "title": "Vortex - Página de Inicio",
+            "description": "Bienvenido a la página de inicio de nuestro sitio web."
+        },
+        "header": {
+            "title": "Vortex",
+            "buttonText": "Comenzar",
+            "menu": {
+                "home": {
+                    "text": "Inicio",
+                    "href": "/"
+                },
+                "about": {
+                    "text": "Acerca de",
+                    "href": "/sobre-nosotros"
+                },
+                "latest": {
+                    "text": "Últimas Noticias",
+                    "href": "/ultimos-articulos"
+                }
+            }
+        }
+    }
+}

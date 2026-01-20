@@ -1,0 +1,122 @@
+---
+import {
+    NavigationMenu,
+    NavigationMenuTrigger,
+    NavigationMenuContent,
+    NavigationMenuItem,
+} from "@/src/components/hybrid-astro-ui/navigation-menu";
+
+import Sun from "@lucide/astro/icons/sun";
+import Moon from "@lucide/astro/icons/moon";
+import { ThemeToggle } from "@/src/components/hybrid-astro-ui/theme-toggle";
+
+import {
+    Tooltip,
+    TooltipTrigger,
+    TooltipContent,
+} from "@/src/components/hybrid-astro-ui/tooltip";
+
+
+
+const categories = [
+    {
+        title: "Architecture & Infrastructure",
+        description:
+            "Explorando las bases técnicas que permiten construir sistemas escalables y resilientes en la nube.",
+        href: "/category/architecture",
+    },
+    {
+        title: "Developer Experience",
+        description:
+            "Optimización de flujos de trabajo, herramientas internas y cómo mejorar la productividad del equipo.",
+        href: "/category/dx",
+    },
+    {
+        title: "Product Engineering",
+        description:
+            "El balance entre la excelencia técnica y la entrega de valor real a través de interfaces intuitivas.",
+        href: "/category/product-engineering",
+    },
+    {
+        title: "Security & Compliance",
+        description:
+            "Prácticas avanzadas para proteger datos y mantener la integridad de los sistemas en producción.",
+        href: "/category/security",
+    },
+];
+
+
+---
+
+<header
+    class="border-b bg-background/10 backdrop-blur-3xl py-4 flex items-center justify-center w-full"
+>
+    <div class="flex items-center justify-between w-full max-w-7xl px-6">
+        <a href="/" class="font-semibold playfair-font text-3xl">Vortex </a>
+        <NavigationMenu class="flex-1">
+            <NavigationMenuItem>
+                <NavigationMenuTrigger
+                    class="font-normal text-[0.9rem] opacity-75 hover:opacity-100"
+                >
+                    Blog
+                </NavigationMenuTrigger>
+                <NavigationMenuContent class="md:grid-cols-2">
+                    {
+                        categories.map((category) => (
+                            <a href={category.href}>
+                                <p class="playfair-font font-bold">{category.title}</p>
+                                <p class="opacity-55 text-[0.75rem]">
+                                    {category.description}
+                                </p>
+                            </a>
+                        ))
+                    }
+                </NavigationMenuContent>
+            </NavigationMenuItem>
+
+            
+            <NavigationMenuItem>
+                <NavigationMenuTrigger
+                    class="font-normal text-[0.9rem] opacity-75 hover:opacity-100"
+                    disableTrigger
+                >
+                    <a href="/pricing">Featured</a>
+                </NavigationMenuTrigger>
+            </NavigationMenuItem>
+
+            <NavigationMenuItem>
+                <NavigationMenuTrigger
+                    class="font-normal text-[0.9rem] opacity-75 hover:opacity-100"
+                    disableTrigger
+                >
+                    <a href="/pricing">Latest Post</a>
+                </NavigationMenuTrigger>
+            </NavigationMenuItem>
+
+            <NavigationMenuItem>
+                <NavigationMenuTrigger
+                    class="font-normal text-[0.9rem] opacity-75 hover:opacity-100"
+                    disableTrigger
+                >
+                    <a href="/pricing">About US</a>
+                </NavigationMenuTrigger>
+            </NavigationMenuItem>
+
+        </NavigationMenu>
+
+        <Tooltip>
+            <TooltipTrigger>
+                <ThemeToggle
+                    class="[&_svg]:w-5 [&_svg]:h-5 transition-colors p-2 rounded-full hover:bg-secondary/30"
+                >
+                    <Moon class="dark:hidden block" />
+                    <Sun class="dark:block hidden" />
+                </ThemeToggle>
+            </TooltipTrigger>
+            <TooltipContent class="text-[0.7rem]">
+                <span class="block dark:hidden">Dark Mode</span>
+                <span class="dark:block hidden">Light Mode</span>
+            </TooltipContent>
+        </Tooltip>
+    </div>
+</header>
