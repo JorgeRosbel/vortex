@@ -6,12 +6,21 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "prepare": "husky install",
+    "format": "prettier --write \"**/*.{js,ts,tsx,astro}\"",
+    "check": "prettier --check \"**/*.{js,ts,tsx,astro}\""
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx,astro}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@ariaskit/astro-collections": "^0.0.1",
     "@ariaskit/astro-i18n": "^0.0.2",
     "@astrojs/mdx": "^4.3.13",
+    "@astrojs/rss": "^4.0.15",
     "@astrojs/sitemap": "^3.7.0",
     "@lucide/astro": "^0.562.0",
     "@tailwindcss/vite": "^4.1.18",
@@ -20,5 +29,11 @@
     "sharp": "^0.34.5",
     "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4.1.18"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.8.0",
+    "prettier-plugin-astro": "^0.14.1"
   }
 }
