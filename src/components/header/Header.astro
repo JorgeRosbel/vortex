@@ -8,14 +8,21 @@ import {
 
 import Sun from "@lucide/astro/icons/sun";
 import Moon from "@lucide/astro/icons/moon";
+import Menu from "@lucide/astro/icons/menu";
+import X from "@lucide/astro/icons/x";
 import { ThemeToggle } from "@/src/components/hybrid-astro-ui/theme-toggle";
+
+import {
+    Toggle,
+    ToggleActive,
+    ToggleInactive,
+} from "@/src/components/hybrid-astro-ui/toggle";
 
 import {
     Tooltip,
     TooltipTrigger,
     TooltipContent,
 } from "@/src/components/hybrid-astro-ui/tooltip";
-
 
 interface Category {
     title: string;
@@ -26,21 +33,15 @@ interface Category {
 interface Links {
     title: string;
     href: string;
-};
+}
 
 interface Props {
     title: string;
     categories: Category[];
     links: Links[];
-
 }
 
 const { categories, title, links } = Astro.props as Props;
-
-
-
-
-
 ---
 
 <header
@@ -48,43 +49,48 @@ const { categories, title, links } = Astro.props as Props;
 >
     <div class="flex items-center justify-between w-full max-w-7xl px-6">
         <a href="/" class="font-semibold playfair-font text-3xl">{title}</a>
-        <NavigationMenu class="flex-1 bg-transparent">
+        <NavigationMenu  
+            class=`
+                flex-1 bg-background border-b left-0 fixed hidden space-y-4 min-h-screen
+                md:static md:border-none top-full m nav-menu md:flex md:space-y-0 md:min-h-0 md:bg-transparent
+                `
+            >
             <NavigationMenuItem>
                 <NavigationMenuTrigger
                     class="font-normal text-[0.9rem] opacity-75 hover:opacity-100"
                 >
                     Blog
                 </NavigationMenuTrigger>
-                <NavigationMenuContent class="md:grid-cols-2">
+                <NavigationMenuContent class="grid-cols-2">
                     {
                         categories.map((category) => (
-                            <a href={category.href+ "/1"}>
-                                <p class=" font-bold capitalize">{category.title}</p>
-                                {
-                                    category.description && (
-                                        <p class="text-[0.75rem] opacity-70">{category.description}</p>
-                                    )
-                                }
+                            <a href={category.href + "/1"} >
+                                <p class=" font-bold capitalize">
+                                    {category.title}
+                                </p>
+                                {category.description && (
+                                    <p class="text-[0.75rem] opacity-70">
+                                        {category.description}
+                                    </p>
+                                )}
                             </a>
                         ))
                     }
                 </NavigationMenuContent>
             </NavigationMenuItem>
 
-            
-           {
+            {
                 links.map((link) => (
                     <NavigationMenuItem>
                         <NavigationMenuTrigger
                             class="font-normal text-[0.9rem] opacity-75 hover:opacity-100"
                             disableTrigger
                         >
-                            <a href={link.href}>{link.title}</a>
+                            <a href={link.href} class="w-full">{link.title}</a>
                         </NavigationMenuTrigger>
                     </NavigationMenuItem>
                 ))
-           }
-
+            }
         </NavigationMenu>
 
         <Tooltip>
@@ -101,5 +107,30 @@ const { categories, title, links } = Astro.props as Props;
                 <span class="dark:block hidden">Light Mode</span>
             </TooltipContent>
         </Tooltip>
+
+        <Toggle active id="menu-btn" class="block md:hidden bg-transparent border-none [&_svg]:w-6 [&_svg]:h-6 ">
+            <ToggleActive>
+                <Menu />
+            </ToggleActive>
+            <ToggleInactive>
+                <X />
+            </ToggleInactive>
+        </Toggle>
     </div>
 </header>
+
+
+<script>
+     const handler = () => {
+        const menuBtn = document.getElementById("menu-btn");
+        const navMenu = document.querySelector(".nav-menu");
+        
+        if (menuBtn && navMenu) {
+            menuBtn.addEventListener("change", () => {
+                navMenu.classList.toggle("hidden");
+            });
+        }
+    };
+
+    document.addEventListener("astro:page-load", handler);
+</script>
