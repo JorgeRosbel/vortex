@@ -9,6 +9,7 @@ import { getCollection } from "astro:content";
 import { slugify } from "@/src/lib/utils";
 import Hero from "@/src/components/hero/Hero.astro";
 import LatestPosts from "@/src/components/post-card/LatestPosts.astro";
+import BlogStats from "@/src/components/stats/BlogStats.astro";
 
 export const getStaticPaths = (() => {
   return [
@@ -62,6 +63,28 @@ const alternateLinks = [
   { href: `/es`, hreflang: "es" },
   { href: `/pt`, hreflang: "pt" },
 ];
+
+
+const blogStatsData = [
+  {
+    title: t("home.blogStats.totalCategories.header"),
+    description: t("home.blogStats.totalCategories.description"),
+    count:categories.length,
+  },
+  {
+    title: t("home.blogStats.totalPosts.header"),
+    description: t("home.blogStats.totalPosts.description"),
+    count: allPosts.length,
+  },
+  {
+    title: t("home.blogStats.totalLanguages.header"),
+    description: t("home.blogStats.totalLanguages.description"),
+    count: (await getCollection("blog"))
+      .map((entry) => entry.data.lang)
+      .filter((value, index, self) => self.indexOf(value) === index).length,
+  }
+];  
+
 ---
 
 <BaseLayout
@@ -78,6 +101,12 @@ const alternateLinks = [
       p1={t("home.hero.p1")}
       h1={t("home.hero.h1")}
       h2={t("home.hero.h2")}
+    />
+
+    <BlogStats
+      title={t("home.blogStats.intro.header")}
+      description={t("home.blogStats.intro.description")}
+      blogData={blogStatsData}
     />
 
     <LatestPosts

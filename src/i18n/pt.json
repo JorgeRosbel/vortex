@@ -30,6 +30,24 @@
         "latestPosts": {
             "title": "Últimos Artigos",
             "description": "Explore nossos artigos mais recentes sobre uma variedade de tópicos."
+        },
+        "blogStats": {
+            "intro": {
+                "header": "Estatísticas do Blog",
+                "description": "Uma visão geral das principais estatísticas do nosso blog."
+            },
+            "totalPosts": {
+                "header": "Total de Artigos",
+                "description": "Número total de artigos publicados no blog."
+            },
+            "totalCategories": {
+                "header": "Total de Categorias",
+                "description": "Número total de categorias no blog."
+            },
+            "totalLanguages": {
+                "header": "Total de Idiomas",
+                "description": "Número total de idiomas disponíveis no blog."
+            }
         }
     },
     "category": "categoria",
